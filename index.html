@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="VietAS DashCam">
 <link rel="manifest" href="./manifest.json">
-<title>VietAS DashCam</title>
+<title>KIENTRUCVIETAS.COM - DashCam</title>
 
 <style>
 :root{
@@ -23,9 +23,8 @@
   --red:#ff4058;
 }
 *{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg)}
 body{
-  margin:0;
-  background:var(--bg);
   color:#f5f7fa;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
@@ -75,7 +74,7 @@ h1{font-size:19px;letter-spacing:.2px;margin:0;font-weight:800}
 }
 .camera-placeholder .cam-icon{font-size:35px;margin-bottom:9px}
 
-/* Canvas đang hiển thị cũng chính là nguồn hình ảnh được ghi vào video */
+/* Canvas hiển thị chính là nguồn hình được ghi vào video */
 .stamp-canvas{
   position:absolute;inset:0;width:100%;height:100%;
   display:block;z-index:3;pointer-events:none;
@@ -101,12 +100,21 @@ h1{font-size:19px;letter-spacing:.2px;margin:0;font-weight:800}
 .speed-unit{font-size:10px;color:#aab8cb;margin-top:4px;letter-spacing:1px}
 .camera.stamping .overlay,.camera.stamping .speed{display:none}
 
-#modeToggle{display:flex;justify-content:flex-end;margin:10px 0 0}
-#toggleMode{
-  background:transparent;border:1px solid var(--line);color:var(--muted);
-  padding:7px 11px;border-radius:9px;font-size:12px;
+#modeToggle{
+  display:flex;justify-content:flex-end;flex-wrap:wrap;
+  gap:8px;margin:10px 0 0;
 }
-.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.mode-button{
+  background:transparent;border:1px solid var(--line);
+  color:var(--muted);padding:9px 12px;
+  border-radius:9px;font-size:12px;font-weight:700;
+}
+#fullscreenBtn{color:var(--accent);border-color:#28504f}
+
+.controls{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:10px;margin-top:12px;
+}
 button{
   border:1px solid var(--line);border-radius:12px;min-height:47px;
   padding:12px 10px;font-size:13px;font-weight:750;color:#f7fafc;
@@ -117,6 +125,7 @@ button:disabled{opacity:.38}
 .primary{background:var(--accent);border-color:var(--accent);color:#061614}
 .stop{background:#d8324a;border-color:#d8324a;color:#fff}
 .secondary{background:#18212d}
+
 #status{
   margin-top:12px;min-height:36px;display:flex;align-items:center;
   padding:10px 12px;background:#111923;border:1px solid #222e3b;
@@ -124,8 +133,8 @@ button:disabled{opacity:.38}
 }
 #status.warning{color:#fde68a;border-color:#5b4820}
 .panel{
-  background:var(--panel);border:1px solid #232e3b;padding:15px;
-  border-radius:15px;margin-top:12px;
+  background:var(--panel);border:1px solid #232e3b;
+  padding:15px;border-radius:15px;margin-top:12px;
 }
 .panel-head{
   display:flex;justify-content:space-between;align-items:center;
@@ -149,6 +158,8 @@ h2{font-size:13px;margin:0;letter-spacing:.2px}
   padding:10px;border-radius:8px;font-size:11px;font-weight:750;
 }
 footer{text-align:center;color:#667588;font-size:10px;line-height:1.6;padding:18px 4px 5px}
+
+/* Chế độ Dash Cam thông thường */
 body.dash-mode main{max-width:900px;padding-left:10px;padding-right:10px}
 body.dash-mode header,body.dash-mode .panel,body.dash-mode footer{display:none}
 body.dash-mode .camera{aspect-ratio:3/4;border-radius:15px}
@@ -157,6 +168,68 @@ body.dash-mode .speed-number{font-size:34px}
 body.dash-mode #modeToggle{margin:8px 0}
 body.dash-mode #toggleMode{color:var(--accent);border-color:#28504f}
 body.dash-mode .controls button{min-height:50px}
+
+/* Chế độ toàn màn hình trong vùng hiển thị của Safari */
+body.fullscreen-mode{
+  overflow:hidden;
+  overscroll-behavior:none;
+}
+body.fullscreen-mode main{
+  position:fixed;
+  z-index:1000;
+  inset:0;
+  width:100%;
+  max-width:none;
+  height:100vh;
+  height:100dvh;
+  margin:0;
+  padding:
+    max(8px,env(safe-area-inset-top))
+    max(8px,env(safe-area-inset-right))
+    max(8px,env(safe-area-inset-bottom))
+    max(8px,env(safe-area-inset-left));
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  background:#05080d;
+}
+body.fullscreen-mode header,
+body.fullscreen-mode .panel,
+body.fullscreen-mode footer{display:none}
+body.fullscreen-mode #modeToggle{
+  order:0;
+  flex-shrink:0;
+  margin:0;
+}
+body.fullscreen-mode .camera{
+  order:1;
+  flex:1 1 0;
+  min-height:0;
+  width:100%;
+  aspect-ratio:auto;
+  border-radius:10px;
+}
+body.fullscreen-mode .camera.stamping{aspect-ratio:auto}
+body.fullscreen-mode .controls{
+  order:2;
+  flex-shrink:0;
+  margin:0;
+  gap:8px;
+}
+body.fullscreen-mode .controls button{
+  min-height:44px;
+  padding:10px 6px;
+}
+body.fullscreen-mode #status{
+  order:3;
+  flex-shrink:0;
+  margin:0;
+  min-height:0;
+  padding:7px 9px;
+  font-size:10px;
+}
+body.fullscreen-mode .speed-number{font-size:32px}
+
 @media(orientation:landscape){
   body.dash-mode .camera{aspect-ratio:16/9}
   body.dash-mode main{max-width:1000px}
@@ -169,17 +242,22 @@ body.dash-mode .controls button{min-height:50px}
   .controls{gap:8px}
   button{font-size:12px}
 }
+@media(max-height:500px) and (orientation:landscape){
+  body.fullscreen-mode #modeToggle{justify-content:flex-end}
+  body.fullscreen-mode .controls button{min-height:38px;padding:7px 5px}
+  body.fullscreen-mode #status{display:none}
+}
 </style>
 </head>
 
 <body>
-<main>
+<main id="app">
 <header>
   <div class="brand">
     <div class="logo">V</div>
     <div>
       <h1>VietAS DashCam</h1>
-      <div class="sub">SMART DRIVE RECORDER</div>
+      <div class="sub">KIENTRUCVIETAS.COM</div>
     </div>
   </div>
   <span class="badge" id="state"><span class="status-dot"></span>SẴN SÀNG</span>
@@ -202,7 +280,8 @@ body.dash-mode .controls button{min-height:50px}
 </section>
 
 <div id="modeToggle">
-  <button id="toggleMode" type="button">◇ Chế độ Dash Cam</button>
+  <button id="toggleMode" class="mode-button" type="button">◇ Chế độ Dash Cam</button>
+  <button id="fullscreenBtn" class="mode-button" type="button" aria-pressed="false">⛶ Toàn màn hình</button>
 </div>
 
 <div class="controls">
@@ -222,7 +301,7 @@ body.dash-mode .controls button{min-height:50px}
     <span class="panel-label">PHIÊN HIỆN TẠI</span>
   </div>
   <div id="recordings">
-    <div class="note">Video được lưu tạm trong phiên trang này. Hãy tải video về iPhone sau khi dừng quay.</div>
+    <div class="note">Video được lưu tạm trong phiên trang này. Hãy tải video về thiết bị sau khi dừng quay.</div>
   </div>
 </section>
 
@@ -238,13 +317,14 @@ body.dash-mode .controls button{min-height:50px}
   </div>
 </section>
 
-<footer>VietAS DashCam · Video không được ứng dụng này tải lên máy chủ.</footer>
+<footer>KIENTRUCVIETAS.COM · Video không được ứng dụng này tải lên máy chủ.</footer>
 </main>
 
 <script>
 'use strict';
 
 const video=document.getElementById('preview');
+const app=document.getElementById('app');
 const cameraBox=document.getElementById('cameraBox');
 const startBtn=document.getElementById('start');
 const stopBtn=document.getElementById('stop');
@@ -258,6 +338,7 @@ const recordingsEl=document.getElementById('recordings');
 const speedEl=document.getElementById('speed');
 const cameraPlaceholder=document.getElementById('cameraPlaceholder');
 const toggleModeBtn=document.getElementById('toggleMode');
+const fullscreenBtn=document.getElementById('fullscreenBtn');
 
 let stream=null;
 let recorder=null;
@@ -301,6 +382,26 @@ function chooseMime(){
   )||'';
 }
 
+/* Bật/tắt chế độ toàn màn hình kiểu giao diện camera. */
+function setFullscreenMode(enabled){
+  document.body.classList.toggle('fullscreen-mode',enabled);
+  fullscreenBtn.setAttribute('aria-pressed',String(enabled));
+  fullscreenBtn.textContent=enabled
+    ?'⤢ Thu nhỏ màn hình'
+    :'⛶ Toàn màn hình';
+}
+
+fullscreenBtn.addEventListener('click',()=>{
+  const enabled=!document.body.classList.contains('fullscreen-mode');
+  setFullscreenMode(enabled);
+});
+
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'&&document.body.classList.contains('fullscreen-mode')){
+    setFullscreenMode(false);
+  }
+});
+
 async function openCamera(){
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
     throw new Error('Không truy cập được camera. Hãy mở trang bằng HTTPS trên trình duyệt hỗ trợ.');
@@ -333,12 +434,11 @@ toggleModeBtn.addEventListener('click',()=>{
     :'◇ Chế độ Dash Cam';
 });
 
-/* Vẽ hình camera, ngày giờ, tọa độ GPS và tốc độ lên cùng một canvas. */
+/* Vẽ hình camera và thông tin lên canvas. */
 function createStampedVideoStream(){
   if(!HTMLCanvasElement.prototype.captureStream){
     throw new Error('Trình duyệt chưa hỗ trợ ghi video có đóng dấu thông tin.');
   }
-
   if(!stream){
     throw new Error('Camera chưa được mở.');
   }
@@ -367,7 +467,6 @@ function createStampedVideoStream(){
     ctx.fillStyle='#000';
     ctx.fillRect(0,0,w,h);
 
-    /* Chép hình camera vào canvas theo tỷ lệ phủ kín khung hình. */
     if(video.readyState>=2&&video.videoWidth&&video.videoHeight){
       const scale=Math.max(w/video.videoWidth,h/video.videoHeight);
       const sw=w/scale;
@@ -383,10 +482,9 @@ function createStampedVideoStream(){
       ctx.fillRect(0,0,w,h);
       ctx.fillStyle='#fff';
       ctx.font='28px Arial,sans-serif';
-      ctx.fillText('VIETAS DASHCAM - ĐANG KHỞI TẠO CAMERA',24,50);
+      ctx.fillText('KIENTRUCVIETAS.COM',24,50);
     }
 
-    const now=new Date();
     const dateTime=new Intl.DateTimeFormat('vi-VN',{
       day:'2-digit',
       month:'2-digit',
@@ -395,7 +493,7 @@ function createStampedVideoStream(){
       minute:'2-digit',
       second:'2-digit',
       hour12:false
-    }).format(now);
+    }).format(new Date());
 
     const coords=currentGps
       ?currentGps.latitude.toFixed(6)+', '+currentGps.longitude.toFixed(6)
@@ -407,7 +505,6 @@ function createStampedVideoStream(){
 
     const gpsStatus=currentGps?'GPS OK':'CHƯA CÓ GPS';
 
-    /* Bảng thông tin ở góc dưới trái, đủ tương phản khi xem lại video. */
     const x=24;
     const y=h-150;
     const boxW=820;
@@ -415,7 +512,6 @@ function createStampedVideoStream(){
 
     ctx.fillStyle='rgba(0,0,0,0.78)';
     ctx.fillRect(x,y,boxW,boxH);
-
     ctx.strokeStyle='rgba(255,255,255,0.5)';
     ctx.lineWidth=2;
     ctx.strokeRect(x,y,boxW,boxH);
@@ -423,7 +519,7 @@ function createStampedVideoStream(){
     ctx.textAlign='left';
     ctx.fillStyle='#fff';
     ctx.font='bold 25px Arial,sans-serif';
-    ctx.fillText('VIETAS DASHCAM',x+18,y+29);
+    ctx.fillText('KIENTRUCVIETAS.COM',x+18,y+29);
 
     ctx.font='22px Arial,sans-serif';
     ctx.fillText(dateTime,x+18,y+59);
@@ -438,16 +534,12 @@ function createStampedVideoStream(){
 
     ctx.font='bold 17px Arial,sans-serif';
     ctx.fillText(gpsStatus,x+boxW-18,y+86);
-
     ctx.textAlign='left';
 
-    /* Cập nhật liên tục để ngày giờ và GPS thay đổi theo thời gian. */
     overlayFrame=requestAnimationFrame(draw);
   };
 
   draw();
-
-  /* Luồng video của recorder lấy trực tiếp từ canvas có đóng dấu. */
   return overlayCanvas.captureStream(30);
 }
 
@@ -510,10 +602,8 @@ startBtn.addEventListener('click',async()=>{
 
     chunks=[];
     activeMime=chooseMime();
-
     recordingStream=createStampedVideoStream();
 
-    /* Giữ âm thanh microphone nếu người dùng đã cấp quyền. */
     stream.getAudioTracks().forEach(track=>{
       recordingStream.addTrack(track);
     });
@@ -523,22 +613,13 @@ startBtn.addEventListener('click',async()=>{
       :new MediaRecorder(recordingStream);
 
     recorder.ondataavailable=event=>{
-      if(event.data&&event.data.size){
-        chunks.push(event.data);
-      }
+      if(event.data&&event.data.size)chunks.push(event.data);
     };
 
     recorder.onerror=event=>{
-      say(
-        'Lỗi ghi video: '+(event.error?.message||'Không xác định'),
-        true
-      );
+      say('Lỗi ghi video: '+(event.error?.message||'Không xác định'),true);
     };
 
-    /*
-     * Chỉ dọn dẹp canvas và camera sau khi MediaRecorder đã phát
-     * sự kiện stop và đã gửi phần dữ liệu cuối cùng.
-     */
     recorder.onstop=()=>{
       saveRecording();
       cleanupRecordingResources();
@@ -550,7 +631,6 @@ startBtn.addEventListener('click',async()=>{
 
     startAt=Date.now();
     elapsedEl.textContent='00:00:00';
-
     if(timer)clearInterval(timer);
     timer=setInterval(updateElapsed,500);
 
@@ -560,28 +640,22 @@ startBtn.addEventListener('click',async()=>{
     indicator.textContent='● REC';
     indicator.style.color='#ff5268';
 
-    say(
-      currentGps
-        ?'Đang ghi hình. Ngày giờ, GPS và tốc độ được đóng dấu lên video.'
-        :'Đang ghi hình. Video có ngày giờ; GPS sẽ hiển thị khi nhận được tín hiệu.'
-    );
+    say(currentGps
+      ?'Đang ghi hình. Ngày giờ, GPS và tốc độ được đóng dấu lên video.'
+      :'Đang ghi hình. Video có ngày giờ; GPS sẽ hiển thị khi nhận được tín hiệu.');
 
     if(navigator.wakeLock?.request){
       try{
         screenLock=await navigator.wakeLock.request('screen');
       }catch(error){}
     }
-
   }catch(error){
     cleanupRecordingResources();
     startBtn.disabled=false;
     stopBtn.disabled=true;
     switchBtn.disabled=false;
     setState('SẴN SÀNG');
-    say(
-      error.message||'Không thể mở camera. Hãy kiểm tra quyền camera và microphone.',
-      true
-    );
+    say(error.message||'Không thể mở camera. Hãy kiểm tra quyền camera và microphone.',true);
   }
 });
 
@@ -594,10 +668,6 @@ stopBtn.addEventListener('click',()=>{
     switchBtn.disabled=true;
     say('Đang hoàn tất và lưu video. Vui lòng chờ...');
 
-    /*
-     * Không dừng recordingStream, canvas hay camera ở đây.
-     * MediaRecorder cần hoàn tất dữ liệu trước khi giải phóng luồng.
-     */
     try{
       recorder.stop();
     }catch(error){
@@ -630,7 +700,7 @@ function saveRecording(){
   const ext=type.includes('mp4')?'mp4':'webm';
   const url=URL.createObjectURL(blob);
   const timestamp=new Date().toISOString().replace(/[:.]/g,'-');
-  const name='VietAS_DashCam_'+timestamp+'.'+ext;
+  const name='KIENTRUCVIETAS_DashCam_'+timestamp+'.'+ext;
 
   const emptyNote=recordingsEl.querySelector('.note');
   if(emptyNote)emptyNote.remove();
@@ -646,7 +716,6 @@ function saveRecording(){
 
   const small=document.createElement('small');
   small.textContent=(blob.size/1024/1024).toFixed(1)+' MB';
-
   info.append(title,small);
 
   const link=document.createElement('a');
@@ -688,7 +757,6 @@ switchBtn.addEventListener('click',async()=>{
   }
 });
 
-/* GPS: ưu tiên tốc độ từ thiết bị; nếu thiếu thì tính từ quãng đường. */
 function distanceMeters(a,b){
   const R=6371000;
   const rad=degrees=>degrees*Math.PI/180;
@@ -755,7 +823,6 @@ gpsBtn.addEventListener('click',()=>{
     };
 
     currentSpeedKmh=speedKmh;
-
     speedEl.querySelector('.speed-number').textContent=
       speedKmh==null?'--':Math.round(speedKmh);
 
@@ -780,10 +847,7 @@ gpsBtn.addEventListener('click',()=>{
 
 document.addEventListener('visibilitychange',()=>{
   if(document.hidden&&recorder&&recorder.state==='recording'){
-    say(
-      'Cảnh báo: trình duyệt đã chuyển ra nền. iOS có thể tạm dừng ghi hình.',
-      true
-    );
+    say('Cảnh báo: trình duyệt đã chuyển ra nền. iOS có thể tạm dừng ghi hình.',true);
   }
 });
 
