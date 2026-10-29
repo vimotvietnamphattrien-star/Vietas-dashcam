@@ -1,5 +1,5 @@
 
-const CACHE = 'vietas-dashcam-v5';
+const CACHE = 'vietas-dashcam-v6';
 const FILES = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', event => {
