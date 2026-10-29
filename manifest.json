@@ -1,0 +1,9 @@
+{
+  "name": "VietAS DashCam",
+  "short_name": "DashCam",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#101827",
+  "theme_color": "#101827",
+  "description": "Ứng dụng web camera hành trình thử nghiệm"
+}
