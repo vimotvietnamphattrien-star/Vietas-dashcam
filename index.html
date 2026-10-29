@@ -10,412 +10,77 @@
 <meta name="apple-mobile-web-app-title" content="VietAS DashCam">
 <link rel="manifest" href="manifest.json">
 <title>VietAS DashCam</title>
-
 <style>
-:root {
-  color-scheme: dark;
-  --bg: #090d14;
-  --panel: #151c27;
-  --panel2: #1b2634;
-  --line: #293646;
-  --muted: #9ba9bb;
-  --accent: #27d6c5;
-  --red: #ff4058;
-}
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: #f5f7fa;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
-main {
-  max-width: 760px;
-  margin: auto;
-  padding: env(safe-area-inset-top) 16px
-    calc(24px + env(safe-area-inset-bottom));
-}
-
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 17px 2px 19px;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-}
-
-.logo {
-  width: 43px;
-  height: 43px;
-  border-radius: 13px;
-  background: #142b30;
-  border: 1px solid #28504f;
-  display: grid;
-  place-items: center;
-  color: var(--accent);
-  font-size: 22px;
-  font-weight: 800;
-}
-
-h1 {
-  font-size: 19px;
-  letter-spacing: .2px;
-  margin: 0;
-  font-weight: 800;
-}
-
-.sub {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 4px;
-  letter-spacing: .4px;
-}
-
-.badge {
-  font-size: 11px;
-  white-space: nowrap;
-  padding: 8px 10px;
-  border-radius: 8px;
-  background: #172b31;
-  color: #62eadb;
-  border: 1px solid #224c50;
-}
-
-.status-dot {
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
-  margin-right: 5px;
-}
-
-.camera {
-  position: relative;
-  background: #020407;
-  border: 1px solid #27313c;
-  border-radius: 18px;
-  overflow: hidden;
-  aspect-ratio: 4 / 3;
-  display: grid;
-  place-items: center;
-  box-shadow: 0 16px 36px #0006;
-}
-
-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  background: #020407;
-}
-
-.camera-placeholder {
-  position: absolute;
-  text-align: center;
-  color: #74849a;
-  font-size: 12px;
-  pointer-events: none;
-}
-
-.camera-placeholder .cam-icon {
-  font-size: 35px;
-  margin-bottom: 9px;
-}
-
-.overlay {
-  position: absolute;
-  inset: 12px 12px auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  pointer-events: none;
-}
-
-.pill {
-  background: #080d12e8;
-  border: 1px solid #ffffff24;
-  padding: 8px 10px;
-  border-radius: 8px;
-  font-weight: 750;
-  font-size: 10px;
-  letter-spacing: .4px;
-}
-
-#recIndicator { color: #a8b4c3; }
-#elapsed { font-variant-numeric: tabular-nums; }
-
-.speed {
-  position: absolute;
-  left: 12px;
-  bottom: 12px;
-  min-width: 112px;
-  background: #080d12e8;
-  border: 1px solid #ffffff2b;
-  padding: 10px 14px;
-  border-radius: 12px;
-}
-
-.speed-number {
-  font-size: 27px;
-  line-height: 1.1;
-  font-weight: 850;
-  letter-spacing: -.7px;
-}
-
-.speed-unit {
-  font-size: 10px;
-  color: #aab8cb;
-  margin-top: 4px;
-  letter-spacing: 1px;
-}
-
-#modeToggle {
-  display: flex;
-  justify-content: flex-end;
-  margin: 10px 0 0;
-}
-
-#toggleMode {
-  background: transparent;
-  border: 1px solid var(--line);
-  color: var(--muted);
-  padding: 7px 11px;
-  border-radius: 9px;
-  font-size: 12px;
-}
-
-.controls {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-button {
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  min-height: 47px;
-  padding: 12px 10px;
-  font-size: 13px;
-  font-weight: 750;
-  color: #f7fafc;
-  background: #1a2431;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-button:active { transform: scale(.98); }
-button:disabled { opacity: .38; }
-
-.primary {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #061614;
-}
-
-.stop {
-  background: #d8324a;
-  border-color: #d8324a;
-  color: #fff;
-}
-
-.secondary { background: #18212d; }
-
-#status {
-  margin-top: 12px;
-  min-height: 36px;
-  display: flex;
-  align-items: center;
-  padding: 10px 12px;
-  background: #111923;
-  border: 1px solid #222e3b;
-  border-radius: 11px;
-  color: #9aabba;
-  font-size: 11px;
-  line-height: 1.5;
-}
-
-#status.warning {
-  color: #fde68a;
-  border-color: #5b4820;
-}
-
-.panel {
-  background: var(--panel);
-  border: 1px solid #232e3b;
-  padding: 15px;
-  border-radius: 15px;
-  margin-top: 12px;
-}
-
-.panel-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-h2 {
-  font-size: 13px;
-  margin: 0;
-  letter-spacing: .2px;
-}
-
-.panel-label {
-  color: var(--muted);
-  font-size: 10px;
-}
-
-.note {
-  font-size: 11px;
-  line-height: 1.6;
-  color: var(--muted);
-}
-
-.warning { color: #fde68a; }
-
-#recordings {
-  display: grid;
-  gap: 8px;
-}
-
-.record {
-  background: var(--panel2);
-  border: 1px solid #2a3747;
-  border-radius: 11px;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  min-width: 0;
-}
-
-.record-info {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.record strong { font-size: 11px; }
-.record small {
-  display: block;
-  color: var(--muted);
-  margin-top: 5px;
-  font-size: 10px;
-}
-
-.record a {
-  flex-shrink: 0;
-  background: #147f78;
-  color: #fff;
-  text-decoration: none;
-  padding: 10px;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 750;
-}
-
-footer {
-  text-align: center;
-  color: #667588;
-  font-size: 10px;
-  line-height: 1.6;
-  padding: 18px 4px 5px;
-}
-
-/* Chế độ Dash Cam gọn */
-body.dash-mode main {
-  max-width: 900px;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-body.dash-mode header,
-body.dash-mode .panel,
-body.dash-mode footer {
-  display: none;
-}
-
-body.dash-mode .camera {
-  aspect-ratio: 3 / 4;
-  border-radius: 15px;
-}
-
-body.dash-mode .speed-number { font-size: 34px; }
-
-body.dash-mode #modeToggle { margin: 8px 0; }
-
-body.dash-mode #toggleMode {
-  color: var(--accent);
-  border-color: #28504f;
-}
-
-body.dash-mode .controls button { min-height: 50px; }
-
-@media (orientation: landscape) {
-  body.dash-mode .camera { aspect-ratio: 16 / 9; }
-  body.dash-mode main { max-width: 1000px; }
-}
-
-@media (max-width: 380px) {
-  main { padding-left: 10px; padding-right: 10px; }
-  h1 { font-size: 17px; }
-  .logo { width: 39px; height: 39px; }
-  .speed-number { font-size: 23px; }
-  .controls { gap: 8px; }
-  button { font-size: 12px; }
-}
+:root{color-scheme:dark;--bg:#090d14;--panel:#151c27;--panel2:#1b2634;--line:#293646;--muted:#9ba9bb;--accent:#27d6c5;--red:#ff4058}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#f5f7fa;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{max-width:760px;margin:auto;padding:env(safe-area-inset-top) 16px calc(24px + env(safe-area-inset-bottom))}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 2px 19px}
+.brand{display:flex;align-items:center;gap:11px}
+.logo{width:43px;height:43px;border-radius:13px;background:#142b30;border:1px solid #28504f;display:grid;place-items:center;color:var(--accent);font-size:22px;font-weight:800}
+h1{font-size:19px;letter-spacing:.2px;margin:0;font-weight:800}
+.sub{font-size:11px;color:var(--muted);margin-top:4px;letter-spacing:.4px}
+.badge{font-size:11px;white-space:nowrap;padding:8px 10px;border-radius:8px;background:#172b31;color:#62eadb;border:1px solid #224c50}
+.status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:5px}
+.camera{position:relative;background:#020407;border:1px solid #27313c;border-radius:18px;overflow:hidden;aspect-ratio:4/3;display:grid;place-items:center;box-shadow:0 16px 36px #0006}
+video{width:100%;height:100%;object-fit:cover;background:#020407}
+.camera-placeholder{position:absolute;text-align:center;color:#74849a;font-size:12px;pointer-events:none}
+.camera-placeholder .cam-icon{font-size:35px;margin-bottom:9px}
+.overlay{position:absolute;inset:12px 12px auto;display:flex;justify-content:space-between;align-items:center;gap:8px;pointer-events:none}
+.pill{background:#080d12e8;border:1px solid #ffffff24;padding:8px 10px;border-radius:8px;font-weight:750;font-size:10px;letter-spacing:.4px}
+#recIndicator{color:#a8b4c3}#elapsed{font-variant-numeric:tabular-nums}
+.speed{position:absolute;left:12px;bottom:12px;min-width:112px;background:#080d12e8;border:1px solid #ffffff2b;padding:10px 14px;border-radius:12px}
+.speed-number{font-size:27px;line-height:1.1;font-weight:850;letter-spacing:-.7px}
+.speed-unit{font-size:10px;color:#aab8cb;margin-top:4px;letter-spacing:1px}
+#modeToggle{display:flex;justify-content:flex-end;margin:10px 0 0}
+#toggleMode{background:transparent;border:1px solid var(--line);color:var(--muted);padding:7px 11px;border-radius:9px;font-size:12px}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+button{border:1px solid var(--line);border-radius:12px;min-height:47px;padding:12px 10px;font-size:13px;font-weight:750;color:#f7fafc;background:#1a2431;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:active{transform:scale(.98)}button:disabled{opacity:.38}
+.primary{background:var(--accent);border-color:var(--accent);color:#061614}
+.stop{background:#d8324a;border-color:#d8324a;color:#fff}
+.secondary{background:#18212d}
+#status{margin-top:12px;min-height:36px;display:flex;align-items:center;padding:10px 12px;background:#111923;border:1px solid #222e3b;border-radius:11px;color:#9aabba;font-size:11px;line-height:1.5}
+#status.warning{color:#fde68a;border-color:#5b4820}
+.panel{background:var(--panel);border:1px solid #232e3b;padding:15px;border-radius:15px;margin-top:12px}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+h2{font-size:13px;margin:0;letter-spacing:.2px}
+.panel-label{color:var(--muted);font-size:10px}
+.note{font-size:11px;line-height:1.6;color:var(--muted)}
+.warning{color:#fde68a}
+#recordings{display:grid;gap:8px}
+.record{background:var(--panel2);border:1px solid #2a3747;border-radius:11px;padding:10px;display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
+.record-info{min-width:0;overflow-wrap:anywhere}
+.record strong{font-size:11px}
+.record small{display:block;color:var(--muted);margin-top:5px;font-size:10px}
+.record a{flex-shrink:0;background:#147f78;color:#fff;text-decoration:none;padding:10px;border-radius:8px;font-size:11px;font-weight:750}
+footer{text-align:center;color:#667588;font-size:10px;line-height:1.6;padding:18px 4px 5px}
+body.dash-mode main{max-width:900px;padding-left:10px;padding-right:10px}
+body.dash-mode header,body.dash-mode .panel,body.dash-mode footer{display:none}
+body.dash-mode .camera{aspect-ratio:3/4;border-radius:15px}
+body.dash-mode .speed-number{font-size:34px}
+body.dash-mode #modeToggle{margin:8px 0}
+body.dash-mode #toggleMode{color:var(--accent);border-color:#28504f}
+body.dash-mode .controls button{min-height:50px}
+@media(orientation:landscape){body.dash-mode .camera{aspect-ratio:16/9}body.dash-mode main{max-width:1000px}}
+@media(max-width:380px){main{padding-left:10px;padding-right:10px}h1{font-size:17px}.logo{width:39px;height:39px}.speed-number{font-size:23px}.controls{gap:8px}button{font-size:12px}}
 </style>
 </head>
-
 <body>
 <main>
-
 <header>
-  <div class="brand">
-    <div class="logo">V</div>
-    <div>
-      <h1>VietAS DashCam</h1>
-      <div class="sub">SMART DRIVE RECORDER</div>
-    </div>
-  </div>
-  <span class="badge" id="state">
-    <span class="status-dot"></span>SẴN SÀNG
-  </span>
+  <div class="brand"><div class="logo">V</div><div><h1>VietAS DashCam</h1><div class="sub">SMART DRIVE RECORDER</div></div></div>
+  <span class="badge" id="state"><span class="status-dot"></span>SẴN SÀNG</span>
 </header>
 
 <section class="camera">
   <video id="preview" autoplay muted playsinline></video>
-
-  <div class="camera-placeholder" id="cameraPlaceholder">
-    <div class="cam-icon">◉</div>
-    <div>Nhấn Bắt đầu quay để mở camera</div>
-  </div>
-
-  <div class="overlay">
-    <span class="pill" id="recIndicator">● STANDBY</span>
-    <span class="pill" id="elapsed">00:00:00</span>
-  </div>
-
-  <div class="speed" id="speed">
-    <div class="speed-number">--</div>
-    <div class="speed-unit">KM/H · GPS</div>
-  </div>
+  <div class="camera-placeholder" id="cameraPlaceholder"><div class="cam-icon">◉</div><div>Nhấn Bắt đầu quay để mở camera</div></div>
+  <div class="overlay"><span class="pill" id="recIndicator">● STANDBY</span><span class="pill" id="elapsed">00:00:00</span></div>
+  <div class="speed" id="speed"><div class="speed-number">--</div><div class="speed-unit">KM/H · GPS</div></div>
 </section>
 
-<div id="modeToggle">
-  <button id="toggleMode" type="button">◇ Chế độ Dash Cam</button>
-</div>
+<div id="modeToggle"><button id="toggleMode" type="button">◇ Chế độ Dash Cam</button></div>
 
 <div class="controls">
   <button id="start" class="primary">● BẮT ĐẦU QUAY</button>
@@ -424,414 +89,358 @@ body.dash-mode .controls button { min-height: 50px; }
   <button id="gps" class="secondary">◎ BẬT GPS</button>
 </div>
 
-<div id="status" role="status" aria-live="polite">
-  Mở bằng Safari qua HTTPS và cho phép truy cập camera khi được hỏi.
-</div>
+<div id="status" role="status" aria-live="polite">Mở bằng Safari qua HTTPS và cho phép truy cập camera khi được hỏi.</div>
 
 <section class="panel">
-  <div class="panel-head">
-    <h2>VIDEO ĐÃ GHI</h2>
-    <span class="panel-label">PHIÊN HIỆN TẠI</span>
-  </div>
-  <div id="recordings">
-    <div class="note">
-      Video được lưu tạm trong phiên trang này. Hãy tải video về iPhone sau khi dừng quay.
-    </div>
-  </div>
+  <div class="panel-head"><h2>VIDEO ĐÃ GHI</h2><span class="panel-label">PHIÊN HIỆN TẠI</span></div>
+  <div id="recordings"><div class="note">Video được lưu tạm trong phiên trang này. Hãy tải video về iPhone sau khi dừng quay.</div></div>
 </section>
 
 <section class="panel">
-  <div class="panel-head">
-    <h2>LƯU Ý SỬ DỤNG</h2>
-  </div>
-  <div class="note warning">
-    Đây là bản thử nghiệm trên trình duyệt, không phải camera hành trình chuyên dụng.
-    iOS có thể tạm dừng ghi hình khi khóa màn hình hoặc chuyển sang ứng dụng khác.
-  </div>
-  <div class="note" style="margin-top:8px">
-    Tốc độ GPS chỉ mang tính tham khảo. Hãy cố định điện thoại trước khi khởi hành và không thao tác khi đang lái xe.
-  </div>
+  <div class="panel-head"><h2>LƯU Ý SỬ DỤNG</h2></div>
+  <div class="note warning">Đây là bản thử nghiệm trên trình duyệt, không phải camera hành trình chuyên dụng. iOS có thể tạm dừng ghi hình khi khóa màn hình hoặc chuyển sang ứng dụng khác.</div>
+  <div class="note" style="margin-top:8px">Tốc độ GPS chỉ mang tính tham khảo. Hãy cố định điện thoại trước khi khởi hành và không thao tác khi đang lái xe.</div>
 </section>
 
-<footer>
-  VietAS DashCam · Video không được ứng dụng này tải lên máy chủ.
-</footer>
-
+<footer>VietAS DashCam · Video không được ứng dụng này tải lên máy chủ.</footer>
 </main>
 
 <script>
-const video = document.getElementById('preview');
-const startBtn = document.getElementById('start');
-const stopBtn = document.getElementById('stop');
-const switchBtn = document.getElementById('switch');
-const gpsBtn = document.getElementById('gps');
-const statusEl = document.getElementById('status');
-const stateEl = document.getElementById('state');
-const indicator = document.getElementById('recIndicator');
-const elapsedEl = document.getElementById('elapsed');
-const recordingsEl = document.getElementById('recordings');
-const speedEl = document.getElementById('speed');
-const cameraPlaceholder = document.getElementById('cameraPlaceholder');
-const toggleModeBtn = document.getElementById('toggleMode');
+const video=document.getElementById('preview');
+const startBtn=document.getElementById('start');
+const stopBtn=document.getElementById('stop');
+const switchBtn=document.getElementById('switch');
+const gpsBtn=document.getElementById('gps');
+const statusEl=document.getElementById('status');
+const stateEl=document.getElementById('state');
+const indicator=document.getElementById('recIndicator');
+const elapsedEl=document.getElementById('elapsed');
+const recordingsEl=document.getElementById('recordings');
+const speedEl=document.getElementById('speed');
+const cameraPlaceholder=document.getElementById('cameraPlaceholder');
+const toggleModeBtn=document.getElementById('toggleMode');
 
-let stream = null;
-let recorder = null;
-let chunks = [];
-let facing = 'environment';
-let gpsWatch = null;
-let startAt = 0;
-let timer = null;
-let activeMime = '';
-let screenLock = null;
+let stream=null;
+let recorder=null;
+let chunks=[];
+let facing='environment';
+let gpsWatch=null;
+let startAt=0;
+let timer=null;
+let activeMime='';
+let screenLock=null;
+let recordingStream=null;
+let overlayCanvas=null;
+let overlayCtx=null;
+let overlayFrame=null;
+let currentGps=null;
+let currentSpeedKmh=null;
 
-function say(msg, warn = false) {
-  statusEl.textContent = msg;
-  statusEl.className = warn ? 'warning' : '';
+function say(msg,warn=false){
+  statusEl.textContent=msg;
+  statusEl.className=warn?'warning':'';
 }
-
-function setState(text, recording = false) {
-  stateEl.innerHTML =
-    '<span class="status-dot" style="background:' +
-    (recording ? '#ff4058' : '#27d6c5') +
-    '"></span>' + text;
+function setState(text,recording=false){
+  stateEl.innerHTML='<span class="status-dot" style="background:'+(recording?'#ff4058':'#27d6c5')+'"></span>'+text;
 }
-
-function chooseMime() {
-  const types = [
-    'video/mp4;codecs=avc1.42E01E,mp4a.40.2',
-    'video/mp4',
-    'video/webm;codecs=vp8,opus',
-    'video/webm'
-  ];
-
-  if (!window.MediaRecorder) return '';
-
-  return types.find(type =>
-    MediaRecorder.isTypeSupported &&
-    MediaRecorder.isTypeSupported(type)
-  ) || '';
+function chooseMime(){
+  const types=['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4','video/webm;codecs=vp8,opus','video/webm'];
+  if(!window.MediaRecorder)return '';
+  return types.find(type=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(type))||'';
 }
-
-async function openCamera() {
-  if (!navigator.mediaDevices ||
-      !navigator.mediaDevices.getUserMedia) {
-    throw new Error(
-      'Không truy cập được camera. Hãy mở trang bằng HTTPS trên trình duyệt hỗ trợ.'
-    );
+async function openCamera(){
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+    throw new Error('Không truy cập được camera. Hãy mở trang bằng HTTPS trên trình duyệt hỗ trợ.');
   }
-
-  if (stream) {
-    stream.getTracks().forEach(track => track.stop());
-  }
-
-  stream = await navigator.mediaDevices.getUserMedia({
-    video: {
-      facingMode: { ideal: facing },
-      width: { ideal: 1920 },
-      height: { ideal: 1080 }
-    },
-    audio: true
+  if(stream)stream.getTracks().forEach(track=>track.stop());
+  stream=await navigator.mediaDevices.getUserMedia({
+    video:{facingMode:{ideal:facing},width:{ideal:1920},height:{ideal:1080}},
+    audio:true
   });
-
-  video.srcObject = stream;
+  video.srcObject=stream;
   await video.play();
-  cameraPlaceholder.style.display = 'none';
+  cameraPlaceholder.style.display='none';
 }
-
-toggleModeBtn.addEventListener('click', () => {
+toggleModeBtn.addEventListener('click',()=>{
   document.body.classList.toggle('dash-mode');
-
-  const active = document.body.classList.contains('dash-mode');
-
-  toggleModeBtn.textContent = active
-    ? '◆ Giao diện Dash Cam · Trở về'
-    : '◇ Chế độ Dash Cam';
+  const active=document.body.classList.contains('dash-mode');
+  toggleModeBtn.textContent=active?'◆ Giao diện Dash Cam · Trở về':'◇ Chế độ Dash Cam';
 });
 
-startBtn.addEventListener('click', async () => {
-  startBtn.disabled = true;
+/* Tạo video mới từ hình camera và chữ đóng dấu trên canvas */
+function createStampedVideoStream(){
+  if(!HTMLCanvasElement.prototype.captureStream){
+    throw new Error('Trình duyệt chưa hỗ trợ ghi video có đóng dấu thông tin.');
+  }
+  overlayCanvas=document.createElement('canvas');
+  overlayCanvas.width=1280;
+  overlayCanvas.height=720;
+  overlayCtx=overlayCanvas.getContext('2d',{alpha:false});
 
-  try {
-    await openCamera();
+  const draw=()=>{
+    if(!overlayCtx||!overlayCanvas)return;
+    const ctx=overlayCtx,w=overlayCanvas.width,h=overlayCanvas.height;
+    ctx.fillStyle='#000';
+    ctx.fillRect(0,0,w,h);
 
-    if (!window.MediaRecorder) {
-      throw new Error('Trình duyệt này không hỗ trợ ghi video trong trang.');
+    if(video.readyState>=2&&video.videoWidth&&video.videoHeight){
+      const scale=Math.max(w/video.videoWidth,h/video.videoHeight);
+      const sw=w/scale,sh=h/scale;
+      ctx.drawImage(video,(video.videoWidth-sw)/2,(video.videoHeight-sh)/2,sw,sh,0,0,w,h);
     }
 
-    chunks = [];
-    activeMime = chooseMime();
+    const now=new Date();
+    const dateTime=new Intl.DateTimeFormat('vi-VN',{
+      day:'2-digit',month:'2-digit',year:'numeric',
+      hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false
+    }).format(now);
+    const coords=currentGps
+      ?currentGps.latitude.toFixed(6)+', '+currentGps.longitude.toFixed(6)
+      :'Đang chờ GPS...';
+    const speed=currentSpeedKmh==null?'-- km/h':Math.round(currentSpeedKmh)+' km/h';
+    const gpsStatus=currentGps?'GPS OK':'CHƯA CÓ GPS';
 
-    recorder = activeMime
-      ? new MediaRecorder(stream, { mimeType: activeMime })
-      : new MediaRecorder(stream);
+    const x=24,y=h-150,boxW=820,boxH=126;
+    ctx.fillStyle='rgba(0,0,0,0.76)';
+    ctx.fillRect(x,y,boxW,boxH);
+    ctx.fillStyle='#fff';
+    ctx.font='bold 25px Arial, sans-serif';
+    ctx.fillText('VIETAS DASHCAM',x+18,y+29);
+    ctx.font='22px Arial, sans-serif';
+    ctx.fillText(dateTime,x+18,y+59);
+    ctx.font='19px Arial, sans-serif';
+    ctx.fillText('GPS: '+coords,x+18,y+88);
+    ctx.textAlign='right';
+    ctx.fillStyle='#62ffad';
+    ctx.font='bold 36px Arial, sans-serif';
+    ctx.fillText(speed,x+boxW-18,y+55);
+    ctx.font='bold 17px Arial, sans-serif';
+    ctx.fillText(gpsStatus,x+boxW-18,y+86);
+    ctx.textAlign='left';
+    overlayFrame=requestAnimationFrame(draw);
+  };
+  draw();
+  return overlayCanvas.captureStream(30);
+}
 
-    recorder.ondataavailable = event => {
-      if (event.data && event.data.size) {
-        chunks.push(event.data);
-      }
+startBtn.addEventListener('click',async()=>{
+  startBtn.disabled=true;
+  try{
+    await openCamera();
+    if(!window.MediaRecorder)throw new Error('Trình duyệt này không hỗ trợ ghi video trong trang.');
+
+    chunks=[];
+    activeMime=chooseMime();
+
+    recordingStream=createStampedVideoStream();
+    stream.getAudioTracks().forEach(track=>recordingStream.addTrack(track));
+
+    recorder=activeMime
+      ?new MediaRecorder(recordingStream,{mimeType:activeMime})
+      :new MediaRecorder(recordingStream);
+
+    recorder.ondataavailable=event=>{
+      if(event.data&&event.data.size)chunks.push(event.data);
     };
-
-    recorder.onerror = event => {
-      say(
-        'Lỗi ghi video: ' +
-        (event.error?.message || 'Không xác định'),
-        true
-      );
+    recorder.onerror=event=>{
+      say('Lỗi ghi video: '+(event.error?.message||'Không xác định'),true);
     };
-
-    recorder.onstop = saveRecording;
+    recorder.onstop=saveRecording;
     recorder.start(1000);
 
-    startAt = Date.now();
-    elapsedEl.textContent = '00:00:00';
+    startAt=Date.now();
+    elapsedEl.textContent='00:00:00';
+    if(timer)clearInterval(timer);
+    timer=setInterval(updateElapsed,500);
 
-    if (timer) clearInterval(timer);
-    timer = setInterval(updateElapsed, 500);
+    stopBtn.disabled=false;
+    switchBtn.disabled=true;
+    setState('ĐANG QUAY',true);
+    indicator.textContent='● REC';
+    indicator.style.color='#ff5268';
+    say(currentGps
+      ?'Đang ghi hình, ngày giờ, GPS và tốc độ sẽ được đóng dấu lên video.'
+      :'Đang ghi hình. Chưa có GPS thì video sẽ hiển thị Đang chờ GPS...');
 
-    stopBtn.disabled = false;
-    switchBtn.disabled = true;
-
-    setState('ĐANG QUAY', true);
-    indicator.textContent = '● REC';
-    indicator.style.color = '#ff5268';
-
-    say('Đang ghi hình. Giữ Safari mở ở màn hình này.');
-
-    if (navigator.wakeLock?.request) {
-      try {
-        screenLock = await navigator.wakeLock.request('screen');
-      } catch (error) {}
+    if(navigator.wakeLock?.request){
+      try{screenLock=await navigator.wakeLock.request('screen');}catch(error){}
     }
-
-  } catch (error) {
-    startBtn.disabled = false;
+  }catch(error){
+    startBtn.disabled=false;
     setState('SẴN SÀNG');
-    say(
-      error.message ||
-      'Không thể mở camera. Hãy kiểm tra quyền camera và microphone.',
-      true
-    );
+    say(error.message||'Không thể mở camera. Hãy kiểm tra quyền camera và microphone.',true);
   }
 });
 
-stopBtn.addEventListener('click', () => {
-  if (recorder && recorder.state !== 'inactive') {
-    recorder.stop();
+stopBtn.addEventListener('click',()=>{
+  if(recorder&&recorder.state!=='inactive')recorder.stop();
+
+  if(recordingStream){
+    recordingStream.getTracks().forEach(track=>track.stop());
+    recordingStream=null;
   }
-
-  if (stream) {
-    stream.getTracks().forEach(track => track.stop());
-    stream = null;
+  if(overlayFrame){
+    cancelAnimationFrame(overlayFrame);
+    overlayFrame=null;
   }
-
-  if (timer) {
-    clearInterval(timer);
-    timer = null;
+  if(stream){
+    stream.getTracks().forEach(track=>track.stop());
+    stream=null;
   }
+  if(timer){clearInterval(timer);timer=null;}
+  if(screenLock){screenLock.release().catch(()=>{});screenLock=null;}
 
-  if (screenLock) {
-    screenLock.release().catch(() => {});
-    screenLock = null;
-  }
-
-  video.srcObject = null;
-  cameraPlaceholder.style.display = '';
-
-  startBtn.disabled = false;
-  stopBtn.disabled = true;
-  switchBtn.disabled = false;
-
+  video.srcObject=null;
+  cameraPlaceholder.style.display='';
+  startBtn.disabled=false;
+  stopBtn.disabled=true;
+  switchBtn.disabled=false;
   setState('ĐÃ DỪNG');
-  indicator.textContent = '● ĐÃ DỪNG';
-  indicator.style.color = '#a8b4c3';
-
+  indicator.textContent='● ĐÃ DỪNG';
+  indicator.style.color='#a8b4c3';
   say('Đã dừng quay. Video sẽ xuất hiện trong danh sách bên dưới.');
 });
 
-async function saveRecording() {
-  if (!chunks.length) {
-    say('Không nhận được dữ liệu video.', true);
+async function saveRecording(){
+  if(!chunks.length){
+    say('Không nhận được dữ liệu video.',true);
     return;
   }
+  const type=recorder.mimeType||activeMime||'video/webm';
+  const blob=new Blob(chunks,{type});
+  const ext=type.includes('mp4')?'mp4':'webm';
+  const url=URL.createObjectURL(blob);
+  const timestamp=new Date().toISOString().replace(/[:.]/g,'-');
+  const name='VietAS_DashCam_'+timestamp+'.'+ext;
 
-  const type = recorder.mimeType || activeMime || 'video/webm';
-  const blob = new Blob(chunks, { type });
-  const ext = type.includes('mp4') ? 'mp4' : 'webm';
-  const url = URL.createObjectURL(blob);
+  const emptyNote=recordingsEl.querySelector('.note');
+  if(emptyNote)emptyNote.remove();
 
-  const timestamp = new Date()
-    .toISOString()
-    .replace(/[:.]/g, '-');
+  const row=document.createElement('div');
+  row.className='record';
+  const info=document.createElement('div');
+  info.className='record-info';
+  const title=document.createElement('strong');
+  title.textContent=name;
+  const small=document.createElement('small');
+  small.textContent=(blob.size/1024/1024).toFixed(1)+' MB';
+  info.append(title,small);
 
-  const name = 'VietAS_DashCam_' + timestamp + '.' + ext;
-
-  const emptyNote = recordingsEl.querySelector('.note');
-  if (emptyNote) emptyNote.remove();
-
-  const row = document.createElement('div');
-  row.className = 'record';
-
-  const info = document.createElement('div');
-  info.className = 'record-info';
-
-  const title = document.createElement('strong');
-  title.textContent = name;
-
-  const small = document.createElement('small');
-  small.textContent =
-    (blob.size / 1024 / 1024).toFixed(1) + ' MB';
-
-  info.append(title, small);
-
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = name;
-  link.textContent = '↓ TẢI VIDEO';
-
-  row.append(info, link);
+  const link=document.createElement('a');
+  link.href=url;
+  link.download=name;
+  link.textContent='↓ TẢI VIDEO';
+  row.append(info,link);
   recordingsEl.prepend(row);
-
   say('Video đã sẵn sàng. Nhấn TẢI VIDEO để lưu về iPhone.');
-  chunks = [];
+  chunks=[];
 }
 
-function updateElapsed() {
-  const seconds = Math.floor((Date.now() - startAt) / 1000);
-
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  const secs = seconds % 60;
-
-  elapsedEl.textContent =
-    String(hours).padStart(2, '0') + ':' +
-    String(minutes).padStart(2, '0') + ':' +
-    String(secs).padStart(2, '0');
+function updateElapsed(){
+  const seconds=Math.floor((Date.now()-startAt)/1000);
+  const hours=Math.floor(seconds/3600);
+  const minutes=Math.floor((seconds%3600)/60);
+  const secs=seconds%60;
+  elapsedEl.textContent=String(hours).padStart(2,'0')+':'+
+    String(minutes).padStart(2,'0')+':'+String(secs).padStart(2,'0');
 }
 
-switchBtn.addEventListener('click', async () => {
-  const previousFacing = facing;
-  facing = facing === 'environment' ? 'user' : 'environment';
-
-  try {
+switchBtn.addEventListener('click',async()=>{
+  const previousFacing=facing;
+  facing=facing==='environment'?'user':'environment';
+  try{
     await openCamera();
-
-    say(
-      facing === 'environment'
-        ? 'Đã chọn camera sau.'
-        : 'Đã chọn camera trước.'
-    );
-  } catch (error) {
-    facing = previousFacing;
-    say(error.message || 'Không thể đổi camera.', true);
+    say(facing==='environment'?'Đã chọn camera sau.':'Đã chọn camera trước.');
+  }catch(error){
+    facing=previousFacing;
+    say(error.message||'Không thể đổi camera.',true);
   }
 });
 
-/* GPS: đọc tốc độ trực tiếp hoặc tính từ hai vị trí liên tiếp */
-let lastGpsFix = null;
-
-function distanceMeters(a, b) {
-  const R = 6371000;
-  const rad = degrees => degrees * Math.PI / 180;
-  const dLat = rad(b.latitude - a.latitude);
-  const dLon = rad(b.longitude - a.longitude);
-  const lat1 = rad(a.latitude);
-  const lat2 = rad(b.latitude);
-
-  const h =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1) * Math.cos(lat2) *
-    Math.sin(dLon / 2) ** 2;
-
-  return 2 * R * Math.asin(Math.sqrt(Math.min(1, h)));
+/* GPS: ưu tiên tốc độ do thiết bị cung cấp, nếu thiếu thì tính từ quãng đường */
+let lastGpsFix=null;
+function distanceMeters(a,b){
+  const R=6371000;
+  const rad=degrees=>degrees*Math.PI/180;
+  const dLat=rad(b.latitude-a.latitude);
+  const dLon=rad(b.longitude-a.longitude);
+  const lat1=rad(a.latitude),lat2=rad(b.latitude);
+  const h=Math.sin(dLat/2)**2+
+    Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLon/2)**2;
+  return 2*R*Math.asin(Math.sqrt(Math.min(1,h)));
 }
 
-gpsBtn.addEventListener('click', () => {
-  if (!navigator.geolocation) {
-    say('Trình duyệt không hỗ trợ GPS.', true);
+gpsBtn.addEventListener('click',()=>{
+  if(!navigator.geolocation){
+    say('Trình duyệt không hỗ trợ GPS.',true);
     return;
   }
-
-  if (gpsWatch !== null) {
+  if(gpsWatch!==null){
     navigator.geolocation.clearWatch(gpsWatch);
-    gpsWatch = null;
-    lastGpsFix = null;
-    gpsBtn.textContent = '◎ BẬT GPS';
-    speedEl.querySelector('.speed-number').textContent = '--';
+    gpsWatch=null;
+    lastGpsFix=null;
+    currentGps=null;
+    currentSpeedKmh=null;
+    gpsBtn.textContent='◎ BẬT GPS';
+    speedEl.querySelector('.speed-number').textContent='--';
     say('Đã tắt cập nhật GPS.');
     return;
   }
 
-  lastGpsFix = null;
+  lastGpsFix=null;
+  gpsWatch=navigator.geolocation.watchPosition(position=>{
+    const c=position.coords;
+    const now=position.timestamp;
+    let speedKmh=null;
 
-  gpsWatch = navigator.geolocation.watchPosition(
-    position => {
-      const c = position.coords;
-      const now = position.timestamp;
-      let speedKmh = null;
-
-      // Ưu tiên tốc độ GPS cung cấp trực tiếp.
-      if (c.speed != null && Number.isFinite(c.speed) && c.speed >= 0) {
-        speedKmh = c.speed * 3.6;
-      } else if (lastGpsFix) {
-        // Nếu không có tốc độ trực tiếp, tính từ khoảng cách và thời gian.
-        const dt = (now - lastGpsFix.timestamp) / 1000;
-        const accuracyOK = c.accuracy <= 50 &&
-                           lastGpsFix.accuracy <= 50;
-
-        if (dt >= 0.5 && dt <= 10 && accuracyOK) {
-          const meters = distanceMeters(lastGpsFix, c);
-
-          // Giảm hiện tượng báo tốc độ ảo khi xe gần như đứng yên.
-          speedKmh = meters < 2 ? 0 : (meters / dt) * 3.6;
-        }
+    if(c.speed!=null&&Number.isFinite(c.speed)&&c.speed>=0){
+      speedKmh=c.speed*3.6;
+    }else if(lastGpsFix){
+      const dt=(now-lastGpsFix.timestamp)/1000;
+      const accuracyOK=c.accuracy<=50&&lastGpsFix.accuracy<=50;
+      if(dt>=0.5&&dt<=10&&accuracyOK){
+        const meters=distanceMeters(lastGpsFix,c);
+        speedKmh=meters<2?0:(meters/dt)*3.6;
       }
-
-      lastGpsFix = {
-        latitude: c.latitude,
-        longitude: c.longitude,
-        accuracy: c.accuracy,
-        timestamp: now
-      };
-
-      speedEl.querySelector('.speed-number').textContent =
-        speedKmh == null ? '--' : Math.round(speedKmh);
-    },
-    error => {
-      say(
-        error.code === 1
-          ? 'Chưa được cấp quyền vị trí. Hãy cho phép Safari truy cập vị trí.'
-          : 'Không lấy được GPS. Hãy thử ở nơi thoáng trời.',
-        true
-      );
-    },
-    {
-      enableHighAccuracy: true,
-      maximumAge: 1000,
-      timeout: 15000
     }
-  );
 
-  gpsBtn.textContent = '◎ TẮT GPS';
+    lastGpsFix={
+      latitude:c.latitude,
+      longitude:c.longitude,
+      accuracy:c.accuracy,
+      timestamp:now
+    };
+    currentGps={
+      latitude:c.latitude,
+      longitude:c.longitude,
+      accuracy:c.accuracy
+    };
+    currentSpeedKmh=speedKmh;
+    speedEl.querySelector('.speed-number').textContent=
+      speedKmh==null?'--':Math.round(speedKmh);
+  },error=>{
+    say(error.code===1
+      ?'Chưa được cấp quyền vị trí. Hãy cho phép Safari truy cập vị trí.'
+      :'Không lấy được GPS. Hãy thử ở nơi thoáng trời.',true);
+  },{
+    enableHighAccuracy:true,
+    maximumAge:1000,
+    timeout:15000
+  });
+
+  gpsBtn.textContent='◎ TẮT GPS';
   say('Đang lấy GPS. Tốc độ có thể cần vài giây để cập nhật.');
 });
 
-document.addEventListener('visibilitychange', () => {
-  if (
-    document.hidden &&
-    recorder &&
-    recorder.state === 'recording'
-  ) {
-    say(
-      'Cảnh báo: Safari đã chuyển ra nền. iOS có thể tạm dừng ghi hình.',
-      true
-    );
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden&&recorder&&recorder.state==='recording'){
+    say('Cảnh báo: Safari đã chuyển ra nền. iOS có thể tạm dừng ghi hình.',true);
   }
 });
 
-if ('serviceWorker' in navigator &&
-    location.protocol.startsWith('http')) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => {});
+if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
   });
 }
 </script>
